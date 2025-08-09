@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sakura no Sekai - Blog & Chat</title>
+    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/sakura.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script defer src="/socket.io/socket.io.js"></script>
+    <script defer src="/js/main.js"></script>
+    <script defer src="/js/auth.js"></script>
+    <script defer src="/js/notifications.js"></script>
+    <script defer src="/js/sakura.js"></script>
+</head>
+<body>
+    <canvas id="sakura-canvas" aria-hidden="true"></canvas>
+
+    <header>
+        <div class="logo">🌸 <span>Sakura no Sekai</span></div>
+        <nav id="nav-menu">
+            <a href="index.html">Strona Główna</a>
+            <a href="blog.html">Blog</a>
+            <a href="chat.html">Chat</a>
+            <a href="gallery.html">Galeria</a>
+            <a href="about.html">O nas</a>
+            <a href="rules.html">Regulamin</a>
+            <a href="settings.html" id="settings-link" style="display: none;">Ustawienia</a>
+        </nav>
+        <div class="header-actions">
+            <button id="theme-toggle" aria-label="Przełącz tryb">🌙</button>
+            <div id="auth-buttons" style="display:none;">
+                <a href="login.html" id="login-link" class="button-link">Zaloguj</a>
+                <a href="register.html" id="register-link" class="button-link">Zarejestruj</a>
+            </div>
+            <div id="user-info" style="display:none;">
+                <span id="user-greeting"></span>
+                <button id="logout-btn" class="button-link">Wyloguj</button>
+            </div>
+            <div id="notif-container" class="notif-bell" style="display:none;">
+                🔔 <span id="notif-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero-section" class="card">
+            <div class="hero-content">
+                <h1>Witaj w Sakura no Sekai!</h1>
+                <p>Miejsce, gdzie kwitną przyjaźnie, rodzą się pasje i dzielimy się inspiracjami.</p>
+                <a href="register.html" class="button-link hero-button">Dołącz do nas</a>
+            </div>
+        </section>
+
+        <section id="latest-blog-posts" class="card">
+            <div class="card-header">
+                <h2>📜 Ostatnie wpisy</h2>
+                <a href="blog.html" class="action-btn">Przejdź do bloga</a>
+            </div>
+            <div id="latest-posts-container">
+                <p id="no-latest-posts" class="muted">Brak wpisów.</p>
+            </div>
+        </section>
+
+        <section id="chat-summary" class="card">
+            <div class="card-header">
+                <h2>💬 Podsumowanie chatu</h2>
+                <a href="chat.html" class="action-btn">Dołącz do rozmowy</a>
+            </div>
+            <div id="chat-summary-content">
+                <p>Liczba aktywnych użytkowników: <span id="active-users-count">0</span></p>
+                <p>Ostatnia wiadomość: <span id="last-chat-message" class="muted">Brak wiadomości.</span></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Sakura no Sekai. <a href="about.html">O nas</a></p>
+    </footer>
+</body>
+</html>

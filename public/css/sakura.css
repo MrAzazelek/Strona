@@ -1,0 +1,13 @@
+/* Sakura canvas sits behind content. Keep pointer-events none so it doesn't block. */
+#sakura-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Subtle sakura-themed accent colors */
+:root {
+  --sakura-pink: #ff4f94;
+  --sakura-soft: linear-gradient(135deg, #ffe4ec, #ffd6e0);
+}

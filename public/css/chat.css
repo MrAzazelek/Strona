@@ -1,0 +1,269 @@
+/* ---- Podstawowe style globalne dla spójności ---- */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@600&display=swap');
+
+:root {
+    --primary-color: #c94c97;
+    --primary-hover-color: #a73a7d;
+    --background-color: #f0f2f5;
+    --card-background-color: #fff;
+    --text-color: #333;
+    --muted-text-color: #666;
+    --link-color: #007bff;
+    --danger-color: #dc3545;
+    --border-radius: 12px;
+    --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f0f2f5 0%, #e6e9f0 100%);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ---- Nagłówek (header) i Stopka (footer) ---- */
+header {
+    background-color: var(--card-background-color);
+    box-shadow: var(--shadow-md);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.logo span {
+    color: var(--text-color);
+}
+
+nav a {
+    margin-left: 30px;
+    text-decoration: none;
+    color: var(--muted-text-color);
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+nav a:hover {
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.button-link, .action-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    white-space: nowrap;
+}
+
+.button-link {
+    background-color: var(--primary-color);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(201, 76, 151, 0.3);
+}
+
+.button-link:hover {
+    background-color: var(--primary-hover-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(201, 76, 151, 0.4);
+}
+
+.danger-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.danger-btn:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+#auth-buttons, #user-info {
+    display: flex;
+    gap: 10px;
+}
+
+#theme-toggle {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+}
+
+main {
+    max-width: 900px;
+    width: 100%;
+    margin: 20px auto;
+    padding: 0 20px;
+    flex-grow: 1;
+}
+
+.card {
+    background-color: var(--card-background-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 25px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+}
+
+.card-header h2 {
+    margin: 0;
+    font-size: 28px;
+    color: var(--primary-color);
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+    background-color: var(--card-background-color);
+    margin-top: auto;
+    font-size: 14px;
+    color: var(--muted-text-color);
+}
+
+footer a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+/* ---- Właściwe style dla chatu ---- */
+.chat-window {
+    height: 500px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.chat-message {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-message.self {
+    align-items: flex-end;
+}
+
+.chat-message-content {
+    max-width: 70%;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    word-wrap: break-word;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.chat-message.other .chat-message-content {
+    background-color: var(--card-background-color);
+    color: var(--text-color);
+    border-bottom-left-radius: 5px;
+}
+
+.chat-message.self .chat-message-content {
+    background-color: var(--primary-color);
+    color: white;
+    border-bottom-right-radius: 5px;
+}
+
+.chat-author {
+    font-weight: 500;
+    font-size: 12px;
+    color: var(--muted-text-color);
+    margin-bottom: 5px;
+}
+
+.chat-form {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-form input {
+    flex-grow: 1;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+}
+
+#clear-chat {
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Nowe style dla powiadomień */
+.notif-bell {
+    position: relative;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--muted-text-color);
+    transition: color 0.2s ease;
+}
+
+.notif-bell:hover {
+    color: var(--primary-color);
+}
+
+#notif-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: var(--danger-color);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejestracja - Sakura no Sekai</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1 class="auth-title">Stwórz nowe konto</h1>
+            <form id="register-form" aria-labelledby="auth-title">
+                <div class="form-group">
+                    <label for="register-username">Nazwa użytkownika</label>
+                    <input type="text" id="register-username" name="username" placeholder="Wprowadź nazwę" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Adres e-mail</label>
+                    <input type="email" id="register-email" name="email" placeholder="Wprowadź adres e-mail" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Hasło</label>
+                    <input type="password" id="register-password" name="password" placeholder="Wprowadź hasło" required autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="register-password-confirm">Potwierdź hasło</label>
+                    <input type="password" id="register-password-confirm" name="password_confirm" placeholder="Powtórz hasło" required autocomplete="new-password">
+                </div>
+                <button type="submit" class="btn-primary">Zarejestruj się</button>
+                <p class="auth-message" id="register-message" aria-live="polite"></p>
+            </form>
+            <div class="auth-footer">
+                <p>Masz już konto? <a href="login.html">Zaloguj się</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="js/auth.js"></script>
+</body>
+</html>

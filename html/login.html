@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logowanie - Sakura no Sekai</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <h1 class="auth-title">Zaloguj się do Sakura no Sekai</h1>
+            <form id="login-form" aria-labelledby="auth-title">
+                <div class="form-group">
+                    <label for="login-username">Nazwa użytkownika lub e-mail</label>
+                    <input type="text" id="login-username" name="username" placeholder="Wprowadź nazwę użytkownika lub e-mail" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Hasło</label>
+                    <input type="password" id="login-password" name="password" placeholder="Wprowadź swoje hasło" required autocomplete="current-password">
+                    <a href="#" class="forgot-password">Zapomniałeś hasła?</a>
+                </div>
+                <button type="submit" class="btn-primary">Zaloguj się</button>
+                <p class="auth-message" id="login-message" aria-live="polite"></p>
+            </form>
+            <div class="auth-footer">
+                <p>Nie masz konta? <a href="register.html">Zarejestruj się</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="js/auth.js"></script>
+</body>
+</html>

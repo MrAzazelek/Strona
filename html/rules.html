@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Regulamin - Sakura no Sekai</title>
+  <link rel="stylesheet" href="css/rules.css" />
+  <link rel="stylesheet" href="css/sakura.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <script defer src="js/auth.js"></script>
+  <script defer src="js/sakura.js"></script>
+</head>
+<body>
+  <canvas id="sakura-canvas" aria-hidden="true"></canvas>
+
+  <header>
+    <div class="logo">🌸 <span>Sakura no Sekai</span></div>
+    <nav id="nav-menu">
+      <a href="index.html">Strona Główna</a>
+      <a href="blog.html">Blog</a>
+      <a href="chat.html">Chat</a>
+      <a href="gallery.html">Galeria</a>
+      <a href="about.html">O nas</a>
+      <a href="rules.html">Regulamin</a>
+    </nav>
+    <div class="header-actions">
+      <button id="theme-toggle" aria-label="Przełącz tryb">🌙</button>
+      <div id="auth-buttons">
+        <a href="login.html" id="login-link" class="button-link">Zaloguj</a>
+        <a href="register.html" id="register-link" class="button-link">Zarejestruj</a>
+      </div>
+      <div id="user-info" style="display:none;">
+        <span id="user-greeting"></span>
+        <button id="logout-btn" class="button-link">Wyloguj</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="rules-page" class="card">
+      <div class="card-header">
+        <h2>📜 Regulamin korzystania z serwisu</h2>
+      </div>
+      <div class="rules-content">
+        <p>Witamy na Sakura no Sekai! Aby zapewnić przyjemną atmosferę dla wszystkich użytkowników, prosimy o przestrzeganie poniższych zasad.</p>
+        
+        <h3>1. Podstawowe zasady zachowania</h3>
+        <ul>
+          <li><strong>Szanuj innych użytkowników.</strong> Wszelkie formy nękania, mowy nienawiści, obraźliwych komentarzy i dyskryminacji są surowo zabronione.</li>
+          <li><strong>Dbaj o kulturalną dyskusję.</strong> Unikaj kłótni, prowokacji i agresywnego języka.</li>
+          <li><strong>Prywatność.</strong> Nie udostępniaj swoich ani cudzych danych osobowych w publicznych miejscach serwisu.</li>
+        </ul>
+        
+        <h3>2. Zasady publikowania treści</h3>
+        <ul>
+          <li><strong>Publikuj treści związane z tematyką.</strong> Wpisy na blogu i zdjęcia w galerii powinny być powiązane z kulturą japońską, anime, mangą, sztuką lub tematyką serwisu.</li>
+          <li><strong>Nielegalne treści.</strong> Publikowanie treści nielegalnych, wulgarnych, pornograficznych, promujących przemoc lub nienawiść jest surowo zabronione.</li>
+          <li><strong>Ochrona praw autorskich.</strong> Upewnij się, że masz prawo do udostępniania treści, które publikujesz. Zakazane jest publikowanie materiałów objętych prawami autorskimi bez zgody autora.</li>
+        </ul>
+
+        <h3>3. Zasady na czacie</h3>
+        <ul>
+            <li><strong>Zakaz spamu i reklam.</strong> Nie wysyłaj wielu wiadomości pod rząd ani nie reklamuj innych stron/serwisów.</li>
+            <li><strong>Język.</strong> Komunikuj się w języku polskim lub angielskim, aby inni mogli cię zrozumieć.</li>
+        </ul>
+
+        <h3>4. Administracja i moderacja</h3>
+        <ul>
+          <li><strong>Decyzje moderatorów.</strong> Decyzje moderatorów i administratorów są ostateczne. W przypadku sporu, skontaktuj się z administracją serwisu poprzez wiadomości prywatne.</li>
+          <li><strong>Konsekwencje.</strong> Nieprzestrzeganie regulaminu może skutkować ostrzeżeniem, usunięciem treści lub tymczasowym/stałym zablokowaniem konta.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Sakura no Sekai. <a href="about.html">O nas</a></p>
+  </footer>
+</body>
+</html>

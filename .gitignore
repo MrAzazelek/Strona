@@ -1,0 +1,5 @@
+# Katalogi
+node_modules/
+
+# Pliki bazy danych
+db.json

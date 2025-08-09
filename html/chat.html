@@ -1,172 +1,64 @@
-// chat.js - connects to socket.io and handles messages
-const socket = io();
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Sakura no Sekai</title>
+    <link rel="stylesheet" href="/css/chat.css">
+    <link rel="stylesheet" href="/css/sakura.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Sakura<span>no Sekai</span></div>
+        <nav>
+            <a href="/">Strona główna</a>
+            <a href="/blog.html">Blog</a>
+            <a href="/chat.html">Chat</a>
+            <a href="/gallery.html">Galeria</a>
+        </nav>
+        <div class="header-actions">
+            <div id="auth-buttons">
+                <a href="/login.html" class="button-link">Zaloguj</a>
+                <a href="/register.html" class="button-link">Rejestracja</a>
+            </div>
+            <div id="user-info" class="hidden">
+                <a href="/profile.html" id="user-profile-link" class="button-link">
+                    <img id="user-avatar" src="" alt="Avatar" style="width: 24px; height: 24px; border-radius: 50%;">
+                    <span id="user-username"></span>
+                </a>
+                <button id="logout-button" class="action-btn danger-btn">Wyloguj</button>
+            </div>
+            <button id="theme-toggle" class="action-btn">🌙</button>
+        </div>
+    </header>
 
-document.addEventListener('DOMContentLoaded', () => {
-    // ---- DOM Elements ----
-    const chatForm = document.getElementById('chat-form');
-    const chatInput = document.getElementById('chat-input');
-    const chatWindow = document.getElementById('chat-window');
-    const chatLoginPrompt = document.getElementById('chat-login-prompt');
-    const clearChatBtn = document.getElementById('clear-chat');
-    const navChatLink = document.querySelector('nav a[href="chat.html"]'); // Pobierz link do chatu
-    const navTitle = document.title; // Tytuł strony
+    <main>
+        <div class="card">
+            <div class="card-header">
+                <h2>Publiczny Chat</h2>
+            </div>
+            <div id="chat-login-prompt" style="display: none;">
+                <p>Aby dołączyć do chatu, musisz być zalogowany. <a href="/login.html">Zaloguj się</a> lub <a href="/register.html">zarejestruj się</a>.</p>
+            </div>
 
-    // ---- State variables ----
-    let notificationCount = 0;
-    let isChatFocused = true;
-    let currentUserData = null; // Przechowuj obiekt użytkownika z localStorage
+            <div id="chat-window" class="chat-window">
+                </div>
 
-    // Sprawdź, czy użytkownik jest zalogowany i pobierz jego dane
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-        currentUserData = JSON.parse(storedUser);
-    }
+            <form id="chat-form" class="chat-form">
+                <input type="text" id="chat-input" placeholder="Wpisz wiadomość..." required>
+                <button type="submit" class="button-link">Wyślij</button>
+            </form>
 
-    const currentUser = currentUserData ? currentUserData.username : null;
-    const userRole = currentUserData ? currentUserData.role : 'guest';
-    const isAdmin = userRole === 'admin';
+            <button id="clear-chat" class="action-btn danger-btn hidden">Wyczyść chat (Admin)</button>
+        </div>
+    </main>
 
-    // ---- UI updates ----
-    if (currentUser) {
-        if (chatForm) chatForm.style.display = 'flex';
-        if (chatLoginPrompt) chatLoginPrompt.style.display = 'none';
-    } else {
-        if (chatForm) chatForm.style.display = 'none';
-        if (chatLoginPrompt) chatLoginPrompt.style.display = 'block';
-    }
+    <footer>
+        <p>&copy; 2025 Sakura no Sekai. Wszelkie prawa zastrzeżone.</p>
+    </footer>
 
-    if (isAdmin) {
-        if (clearChatBtn) clearChatBtn.classList.remove('hidden');
-    } else {
-        if (clearChatBtn) clearChatBtn.classList.add('hidden');
-    }
-
-    // ---- Event handlers ----
-    window.addEventListener('focus', () => {
-        isChatFocused = true;
-        resetNotifications();
-    });
-
-    window.addEventListener('blur', () => {
-        isChatFocused = false;
-    });
-
-    // ---- Socket.IO handlers ----
-    socket.on('connect', () => {
-        console.log('socket connected');
-        if (currentUserData) {
-            // Wyślij dane identyfikacyjne na serwer
-            socket.emit('identify', { username: currentUserData.username, role: currentUserData.role });
-        }
-    });
-
-    socket.on('chat:history', (messages) => {
-        chatWindow.innerHTML = '';
-        messages.forEach(addMsg);
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-    });
-
-    socket.on('chat:message', (m) => {
-        addMsg(m);
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-        if (!isChatFocused && m.username !== currentUser) {
-            showNotification(m);
-        }
-    });
-
-    socket.on('chat:system', (m) => {
-        addSystemMsg(m);
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-    });
-    
-    socket.on('chat:cleared', () => {
-        chatWindow.innerHTML = `<div class="system-message">Chat został wyczyszczony przez administratora.</div>`;
-        chatWindow.scrollTop = chatWindow.scrollHeight;
-    });
-    
-    if (chatForm) {
-        chatForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const text = chatInput.value.trim();
-            if (!text || !currentUserData) return;
-
-            // Wyślij wiadomość z danymi użytkownika
-            socket.emit('chat:send', { 
-                text, 
-                username: currentUserData.username, 
-                role: currentUserData.role, 
-                createdAt: new Date() 
-            });
-            chatInput.value = '';
-        });
-    }
-
-    if (clearChatBtn) {
-        clearChatBtn.addEventListener('click', () => {
-            if (isAdmin && confirm('Czy na pewno chcesz wyczyścić cały chat?')) {
-                socket.emit('chat:clear');
-            }
-        });
-    }
-
-    // ---- Message rendering functions ----
-    function addMsg(m) {
-        const el = document.createElement('div');
-        el.className = 'chat-message';
-
-        const isSelf = m.username === currentUser;
-        el.classList.add(isSelf ? 'self' : 'other');
-
-        let authorHtml;
-        if (m.role === 'admin') {
-            authorHtml = `<span class="chat-author chat-admin">Administrator: ${escapeHtml(m.username)}</span>`;
-        } else {
-            authorHtml = `<span class="chat-author">${escapeHtml(m.username)}</span>`;
-        }
-
-        el.innerHTML = `
-            ${authorHtml}
-            <div class="chat-message-content">${escapeHtml(m.text)}</div>
-            <span class="chat-timestamp">${new Date(m.createdAt).toLocaleTimeString()}</span>
-        `;
-        
-        el.style.animation = 'fadeIn 0.5s ease-out';
-        chatWindow.appendChild(el);
-    }
-    
-    function addSystemMsg(m) {
-        const el = document.createElement('div');
-        el.className = 'system-message';
-        el.textContent = m.text;
-        chatWindow.appendChild(el);
-    }
-    
-    // ---- Notification functions ----
-    function showNotification(message) {
-        notificationCount++;
-        document.title = `(${notificationCount}) Nowe wiadomości!`;
-        
-        if (navChatLink) {
-            navChatLink.classList.add('new-message');
-        }
-    }
-
-    function resetNotifications() {
-        notificationCount = 0;
-        document.title = navTitle;
-        if (navChatLink) {
-            navChatLink.classList.remove('new-message');
-        }
-    }
-
-    // Funkcja zabezpieczająca przed XSS
-    function escapeHtml(s = '') {
-        return s.replace(/[&<>"']/g, c => ({
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#39;'
-        }[c]));
-    }
-});
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
+</html>

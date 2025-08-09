@@ -1,40 +1,38 @@
-// chat.js - connects to socket.io and handles messages
 const socket = io();
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Pobierz elementy DOM
     const chatForm = document.getElementById('chat-form');
     const chatInput = document.getElementById('chat-input');
     const chatWindow = document.getElementById('chat-window');
     const chatLoginPrompt = document.getElementById('chat-login-prompt');
     const clearChatBtn = document.getElementById('clear-chat');
-    const navChatLink = document.querySelector('nav a[href="chat.html"]'); // Pobierz link do chatu
-    const navTitle = document.title; // Tytuł strony
-
-    // Zmienne stanu powiadomień
+    const navChatLink = document.querySelector('nav a[href="/chat.html"]');
+    const navTitle = document.title;
     let notificationCount = 0;
     let isChatFocused = true;
 
-    // Symulacja bazy danych użytkowników
-    const users = JSON.parse(localStorage.getItem('users')) || {};
-
-    // Pobierz bieżącego użytkownika i jego rolę
-    const currentUser = localStorage.getItem('currentUser');
-    const userRole = currentUser ? users[currentUser].role : 'guest';
+    // Użyj localStorage do pobierania danych użytkownika
+    const currentUserData = JSON.parse(localStorage.getItem('currentUser'));
+    const currentUser = currentUserData ? currentUserData.username : null;
+    const userRole = currentUserData ? currentUserData.role : 'guest';
     const isAdmin = userRole === 'admin';
 
-    // Pokaż odpowiednie elementy dla zalogowanego użytkownika
+    // Aktualizacja UI
     if (currentUser) {
-        chatForm.style.display = 'flex';
-        chatLoginPrompt.style.display = 'none';
+        if (chatForm) chatForm.style.display = 'flex';
+        if (chatLoginPrompt) chatLoginPrompt.style.display = 'none';
+    } else {
+        if (chatForm) chatForm.style.display = 'none';
+        if (chatLoginPrompt) chatLoginPrompt.style.display = 'block';
     }
 
-    // Pokaż przycisk czyszczenia czatu tylko dla administratora
     if (isAdmin) {
-        clearChatBtn.classList.remove('hidden');
+        if (clearChatBtn) clearChatBtn.classList.remove('hidden');
+    } else {
+        if (clearChatBtn) clearChatBtn.classList.add('hidden');
     }
 
-    // Obsługa zdarzeń skupienia okna (dla powiadomień)
+    // Obsługa zdarzeń okna
     window.addEventListener('focus', () => {
         isChatFocused = true;
         resetNotifications();
@@ -47,8 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Obsługa socket.io
     socket.on('connect', () => {
         console.log('socket connected');
-        if (currentUser) {
-            socket.emit('identify', { username: currentUser, role: userRole });
+        if (currentUserData) {
+            socket.emit('identify', { username: currentUserData.username, role: currentUserData.role });
         }
     });
 
@@ -70,22 +68,23 @@ document.addEventListener('DOMContentLoaded', () => {
         addSystemMsg(m);
         chatWindow.scrollTop = chatWindow.scrollHeight;
     });
-    
+
     socket.on('chat:cleared', () => {
         chatWindow.innerHTML = `<div class="system-message">Chat został wyczyszczony przez administratora.</div>`;
         chatWindow.scrollTop = chatWindow.scrollHeight;
     });
-    
+
     if (chatForm) {
         chatForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const text = chatInput.value.trim();
-            if (!text || !currentUser) return;
-
-            const usernameToSend = currentUser;
-            const roleToSend = userRole;
-
-            socket.emit('chat:send', { text, username: usernameToSend, role: roleToSend, createdAt: new Date() });
+            if (!text || !currentUserData) return;
+            socket.emit('chat:send', { 
+                text, 
+                username: currentUserData.username, 
+                role: currentUserData.role, 
+                createdAt: new Date() 
+            });
             chatInput.value = '';
         });
     }
@@ -98,10 +97,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Funkcje renderujące
     function addMsg(m) {
         const el = document.createElement('div');
         el.className = 'chat-message';
-
         const isSelf = m.username === currentUser;
         el.classList.add(isSelf ? 'self' : 'other');
 
@@ -117,33 +116,27 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="chat-message-content">${escapeHtml(m.text)}</div>
             <span class="chat-timestamp">${new Date(m.createdAt).toLocaleTimeString()}</span>
         `;
-        
-        // Dodaj animację wejścia
-        el.style.animation = 'fadeIn 0.5s ease-out';
 
+        el.style.animation = 'fadeIn 0.5s ease-out';
         chatWindow.appendChild(el);
     }
-    
+
     function addSystemMsg(m) {
         const el = document.createElement('div');
         el.className = 'system-message';
         el.textContent = m.text;
         chatWindow.appendChild(el);
     }
-    
-    // Funkcja wyświetlająca powiadomienia
+
+    // Funkcje powiadomień
     function showNotification(message) {
-        // Zwiększ licznik i zaktualizuj tytuł strony
         notificationCount++;
         document.title = `(${notificationCount}) Nowe wiadomości!`;
-        
-        // Zaktualizuj powiadomienie na ikonie dzwonka w nawigacji
         if (navChatLink) {
             navChatLink.classList.add('new-message');
         }
     }
 
-    // Funkcja resetująca powiadomienia
     function resetNotifications() {
         notificationCount = 0;
         document.title = navTitle;
@@ -151,15 +144,14 @@ document.addEventListener('DOMContentLoaded', () => {
             navChatLink.classList.remove('new-message');
         }
     }
-});
 
-// Funkcja zabezpieczająca przed XSS
-function escapeHtml(s = '') {
-    return s.replace(/[&<>"']/g, c => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-    }[c]));
-}
+    function escapeHtml(s = '') {
+        return s.replace(/[&<>"']/g, c => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        }[c]));
+    }
+});

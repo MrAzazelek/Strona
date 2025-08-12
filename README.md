@@ -1,1 +1,1 @@
-"# Strona-server-sakura-no-sekai" 
+# Strona server Sakura no Sekai

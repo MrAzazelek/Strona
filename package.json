@@ -1,7 +1,7 @@
 {
   "name": "sakura-no-sekai",
   "version": "1.0.0",
-  "description": "Portal Sakura no Sekai - demo fullstack",
+  "description": "Portal Sakura no Sekai - demo ",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
